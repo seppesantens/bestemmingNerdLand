@@ -1,5 +1,5 @@
 # bestemming Nerdland
-**Inspiratie nodig voor je volgende uitstap of reis?** Met deze toepassing vind je heel wat "Nerdland bestemmingen" op een interactieve kaart. Klik op een bestemming om meer informatie te krijgen en luister direct naar het bijbehorende fragment.
+**Inspiratie nodig voor je volgende uitstap of reis?** [Nerdland](https://maandoverzicht.nerdland.be/) to the rescue! Met deze toepassing vind je heel wat "Nerdland bestemmingen" op een interactieve kaart. Klik op een bestemming om meer informatie te krijgen en luister direct naar het bijbehorende fragment.
 
 Bekijk het resultaat op [GitHub Pages](https://seppesantens.github.io/bestemmingNerdLand/)
 
