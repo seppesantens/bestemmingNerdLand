@@ -9,7 +9,7 @@ De toepassing is gebaseerd op open source en open knowledge:
 - De achtergrond waarop de bestemmingen getoond worden is gebaseerd op de open data van [OpenStreetMap](https://www.openstreetmap.org/)
 - Informatie over de bestemmingen wordt gegeven door [Wikidata](https://www.wikidata.org/) en [Wikipedia](https://www.wikipedia.org/)
 
-## zelf bijdrage?
+## zelf bijdragen?
 De toepassing is heel erg eenvoudig en dat mag gerust zo blijven. Pull requests worden aangemoedigd, maar vooral om de data aan te vullen.
 
 De structuur van de data in [data.geojson](https://github.com/seppesantens/bestemmingNerdLand/blob/main/data.geojson) is simpel en bestaat uit:
