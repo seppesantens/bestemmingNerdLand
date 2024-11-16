@@ -19,6 +19,21 @@
 	  {
 		"type": "Feature",
 		"properties": {
+		  "WD_id": "Q652252",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-september-2022",
+		  "SC_stfr": 2065000
+		},
+		"geometry": {
+		  "coordinates": [
+			-70.6822347,
+			-29.0486812
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
 		  "WD_id": "Q48314",
 		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-september-2022",
 		  "SC_stfr": 3619000
