@@ -82,13 +82,18 @@
                 async function getWikiDataItem() {
                   const response = await fetch(WikiData_url);
                   const WikiDataItem = await response.json();
-                  // to do: situatie opvangen waarbij label of beschrijving niet beschikbaar zijn in de voorkeurstaal of waarbij image niet beschikbaar is
+                  // to do: situatie opvangen waarbij label of beschrijving niet beschikbaar zijn in het Nederlands
                   const label = WikiDataItem["entities"][WD_id]["labels"]["nl"]["value"];
                   const description = WikiDataItem["entities"][WD_id]["descriptions"]["nl"]["value"];
-                  const filename = WikiDataItem['entities'][WD_id]['claims']['P18'][0]['mainsnak']['datavalue']['value'];
-                  const URL = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(filename.trim());
-                  
-                  popupHTML = '<p> <strong>' + label + '</strong> <br />' + description + '</p>' + '<img src="' + URL + '" width="100%">';
+				  // Check whether the Wikidata item has an image (P18). If so, show it.
+				  if (WikiDataItem['entities'][WD_id]['claims']['P18']?.[0]?.['mainsnak']?.['datavalue']?.['value']) {
+					const filename = WikiDataItem['entities'][WD_id]['claims']['P18'][0]['mainsnak']['datavalue']['value'];
+					const URL = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(filename.trim());
+					popupHTML = '<p> <strong>' + label + '</strong> <br />' + description + '</p>' + '<img src="' + URL + '" width="100%">';
+				  }
+				  else{
+					popupHTML = '<p> <strong>' + label + '</strong> <br />' + description + '</p>';
+				  }
                   
                   new maplibregl.Popup()
                     .setLngLat(coordinates)
