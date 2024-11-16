@@ -85,16 +85,26 @@
                   // to do: situatie opvangen waarbij label of beschrijving niet beschikbaar zijn in het Nederlands
                   const label = WikiDataItem["entities"][WD_id]["labels"]["nl"]["value"];
                   const description = WikiDataItem["entities"][WD_id]["descriptions"]["nl"]["value"];
+
+				  popupHTML = '<p> <strong>' + label + '</strong> <br />' + description;
+
+				  // Check whether the Wikidata item has a Dutch Wikipedia page
+				  WP_link = "Geen Wikipedia-artikel beschikbaar";
+				  if (WikiDataItem["entities"][WD_id]["sitelinks"]?.["nlwiki"]?.["url"]) {
+					console.log("jooooo");
+					WP_link = WikiDataItem["entities"][WD_id]["sitelinks"]["nlwiki"]["url"];
+					popupHTML = popupHTML + '<br />' +  '<a href="' + WP_link + '" target="_blank">lees meer op Wikipedia</a>';
+				  }
+				  
+				  popupHTML = popupHTML + '</p>';
+				  
 				  // Check whether the Wikidata item has an image (P18). If so, show it.
 				  if (WikiDataItem['entities'][WD_id]['claims']['P18']?.[0]?.['mainsnak']?.['datavalue']?.['value']) {
 					const filename = WikiDataItem['entities'][WD_id]['claims']['P18'][0]['mainsnak']['datavalue']['value'];
 					const URL = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(filename.trim());
-					popupHTML = '<p> <strong>' + label + '</strong> <br />' + description + '</p>' + '<img src="' + URL + '" width="100%">';
+					popupHTML = popupHTML + '<img src="' + URL + '" width="100%">';
 				  }
-				  else{
-					popupHTML = '<p> <strong>' + label + '</strong> <br />' + description + '</p>';
-				  }
-                  
+
                   new maplibregl.Popup()
                     .setLngLat(coordinates)
                     .setHTML(popupHTML)
