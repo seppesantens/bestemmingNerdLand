@@ -319,21 +319,6 @@
 	  {
 		"type": "Feature",
 		"properties": {
-		  "WD_id": "Q43332",
-		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-augustus-2023",
-		  "SC_stfr": 3851000
-		},
-		"geometry": {
-		  "coordinates": [
-			14.48843,
-			40.75036
-		  ],
-		  "type": "Point"
-		}
-	  },
-	  {
-		"type": "Feature",
-		"properties": {
 		  "WD_id": "Q1347586",
 		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-november-2023",
 		  "SC_stfr": 1300000
@@ -447,6 +432,36 @@
 		  "coordinates": [
 			12.503721,
 			41.866479
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q43332",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-december-2024",
+		  "SC_stfr": 1466100
+		},
+		"geometry": {
+		  "coordinates": [
+			14.48843,
+			40.75036
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q130730158",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-december-2024",
+		  "SC_stfr": 3.903.000
+		},
+		"geometry": {
+		  "coordinates": [
+			-89.3175,
+			18.9025
 		  ],
 		  "type": "Point"
 		}
