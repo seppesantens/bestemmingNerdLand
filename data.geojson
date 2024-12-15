@@ -439,6 +439,21 @@
 	  {
 		"type": "Feature",
 		"properties": {
+		  "WD_id": "Q862589",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-oktober-2024",
+		  "SC_stfr": 1077100
+		},
+		"geometry": {
+		  "coordinates": [
+			-76.72433,
+			40.15370
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
 		  "WD_id": "Q43332",
 		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-december-2024",
 		  "SC_stfr": 1466100
