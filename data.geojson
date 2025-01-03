@@ -495,6 +495,21 @@
 		  ],
 		  "type": "Point"
 		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q25923",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-januari-2025",
+		  "SC_stfr": 1065850
+		},
+		"geometry": {
+		  "coordinates": [
+			15.6463656,
+			78.2231558
+		  ],
+		  "type": "Point"
+		}
 	  }
 	]
 }
