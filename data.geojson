@@ -364,14 +364,14 @@
 	  {
 		"type": "Feature",
 		"properties": {
-		  "WD_id": "Q48821",
+		  "WD_id": "Q6389687",
 		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-augustus-2024",
 		  "SC_stfr": 70000
 		},
 		"geometry": {
 		  "coordinates": [
-			-80.65098,
-			28.58591 
+			-80.68184,
+			28.52428 
 		  ],
 		  "type": "Point"
 		}
@@ -469,21 +469,6 @@
 	  {
 		"type": "Feature",
 		"properties": {
-		  "WD_id": "Q43332",
-		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-december-2024",
-		  "SC_stfr": 1466100
-		},
-		"geometry": {
-		  "coordinates": [
-			14.48843,
-			40.75036
-		  ],
-		  "type": "Point"
-		}
-	  },
-	  {
-		"type": "Feature",
-		"properties": {
 		  "WD_id": "Q130730158",
 		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-december-2024",
 		  "SC_stfr": 3903000
@@ -507,6 +492,66 @@
 		  "coordinates": [
 			15.6463656,
 			78.2231558
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q901058",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2025",
+		  "SC_stfr": 384100
+		},
+		"geometry": {
+		  "coordinates": [
+			-80.65098,
+			28.58591 
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q513",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2025",
+		  "SC_stfr": 2255500
+		},
+		"geometry": {
+		  "coordinates": [
+			86.92521,
+			27.98806 
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q43332",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2025",
+		  "SC_stfr": 6970500
+		},
+		"geometry": {
+		  "coordinates": [
+			14.48843,
+			40.75036
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q524",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2025",
+		  "SC_stfr": 7436000
+		},
+		"geometry": {
+		  "coordinates": [
+			14.426197,
+			40.821396
 		  ],
 		  "type": "Point"
 		}
