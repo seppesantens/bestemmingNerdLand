@@ -555,6 +555,51 @@
 		  ],
 		  "type": "Point"
 		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q133134067",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-maart-2025",
+		  "SC_stfr": 5094000
+		},
+		"geometry": {
+		  "coordinates": [
+			5.206168,
+			50.795580
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q3489993",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-maart-2025",
+		  "SC_stfr": 5306000
+		},
+		"geometry": {
+		  "coordinates": [
+			13.830500,
+			49.677616
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q583",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-maart-2025",
+		  "SC_stfr": 6832000
+		},
+		"geometry": {
+		  "coordinates": [
+			6.8651706,
+			45.8327056
+		  ],
+		  "type": "Point"
+		}
 	  }
 	]
 }
