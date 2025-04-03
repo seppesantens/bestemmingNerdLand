@@ -615,6 +615,22 @@
 		  ],
 		  "type": "Point"
 		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q124478301",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-april-2025",
+		  "SC_stfr": 5038000
+
+		},
+		"geometry": {
+		  "coordinates": [
+			16.02332,
+			69.29453
+		  ],
+		  "type": "Point"
+		}
 	  }
 	]
 }
