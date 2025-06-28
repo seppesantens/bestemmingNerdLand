@@ -40,6 +40,18 @@
         map.setProjection({
             type: 'globe', // Set projection to globe
         });
+		
+		var iframeElement = document.querySelector('iframe');
+	    var widget = SC.Widget(iframeElement);
+
+	    const SC_link = "https://api.soundcloud.com/tracks/2069232792";
+	    const SC_stfr = 7552500;
+
+		widget.load(SC_link, {'visual':'true'});
+		widget.bind(SC.Widget.Events.READY,function(){ //When player is ready, attach an event
+			widget.seekTo(SC_stfr);
+		});
+		
     });
     
     map.on('load', async () => {
