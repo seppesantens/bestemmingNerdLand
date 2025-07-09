@@ -631,6 +631,21 @@
 		  ],
 		  "type": "Point"
 		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q835309",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-juli-2025",
+		  "SC_stfr": 5989100
+		},
+		"geometry": {
+		  "coordinates": [
+			32.601298,
+			25.740314
+		  ],
+		  "type": "Point"
+		}
 	  }
 	]
 }
