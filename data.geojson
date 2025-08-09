@@ -646,6 +646,81 @@
 		  ],
 		  "type": "Point"
 		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q255371",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-augustus-2025",
+		  "SC_stfr": 1412000
+		},
+		"geometry": {
+		  "coordinates": [
+			-119.407654,
+			46.455218
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q255371",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-augustus-2025",
+		  "SC_stfr": 1412000
+		},
+		"geometry": {
+		  "coordinates": [
+			-90.774242,
+			30.562894
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q2063130",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-augustus-2025",
+		  "SC_stfr": 1412000
+		},
+		"geometry": {
+		  "coordinates": [
+			10.504582,
+			43.631362
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q725081",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-augustus-2025",
+		  "SC_stfr": 1412000
+		},
+		"geometry": {
+		  "coordinates": [
+			137.278451,
+			36.433092
+		  ],
+		  "type": "Point"
+		}
+	  },
+	  {
+		"type": "Feature",
+		"properties": {
+		  "WD_id": "Q841079",
+		  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-augustus-2025",
+		  "SC_stfr": 4214000
+		},
+		"geometry": {
+		  "coordinates": [
+			-155.475981,
+			19.825644
+		  ],
+		  "type": "Point"
+		}
 	  }
 	]
 }
