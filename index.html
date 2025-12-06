@@ -64,6 +64,8 @@
     });
     
     map.on('load', async () => {
+		let NRDLplaces, NRDLclips;
+		
 		try {
           // Data parallel ophalen en afwachten
           const [NRDLplaces, NRDLclips] = await Promise.all([
