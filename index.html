@@ -64,16 +64,15 @@
     });
     
     map.on('load', async () => {
-		let NRDLplaces, NRDLclips;
+		let NRDLclips;
 		
 		try {
           // Data parallel ophalen en afwachten
-          const [NRDLplaces, NRDLclips] = await Promise.all([
-            loadJSON('./NRDLplaces.geojson'),
+          const NRDLclips = await Promise.all([
             loadJSON('./NRDLclips.json')
 		  ]);
 		} catch (err) {
-		  console.error('Error while loading data', err);
+		  console.error('Error while loading clips data', err);
 		}
 		
 		// set default Soundcloud clip
@@ -96,7 +95,7 @@
 		// Add a GeoJSON source
 		map.addSource('places', {
 			'type': 'geojson',
-			'data': NRDLplaces                   
+			'data': ./NRDLplaces.geojson                   
 		});
 		
 		// Add a layer showing the places.
