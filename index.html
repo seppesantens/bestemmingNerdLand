@@ -68,7 +68,7 @@
         map.addImage('custom-marker', image.data);
 
 		// load clips data
-		const NRDLclips = await loadJSON('./NRDLclips.geojson');
+		const NRDLclips = await loadJSON('https://raw.githubusercontent.com/seppesantens/bestemmingNerdLand/refs/heads/main/NRDLclips.json');
 
 		// Add a GeoJSON source
 		map.addSource('places', {
