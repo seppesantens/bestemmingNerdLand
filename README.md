@@ -15,8 +15,14 @@ De toepassing is gebaseerd op open source en open knowledge:
 ## Zelf bijdragen?
 De toepassing is heel erg eenvoudig en dat mag gerust zo blijven. Pull requests worden aangemoedigd, maar vooral om de data aan te vullen.
 
-De structuur van de data in [data.geojson](https://github.com/seppesantens/bestemmingNerdLand/blob/main/data.geojson) is simpel en bestaat uit:
-- een Wikidata item voor de bestemming
-- een link naar de Nerdland aflevering op Soundcloud
-- de tijdscode van het fragment 
-- de geografische coördinaten van de bestemming
+De data zijn opgesplitst in 
+- [NRDLplaces.geojson](https://github.com/seppesantens/bestemmingNerdLand/blob/main/NRDLplaces.geojson) met daarin:
+	- een Wikidata item voor de bestemming
+	- de geografische coördinaten van de bestemming
+
+- [NRDLclips.geojson](https://github.com/seppesantens/bestemmingNerdLand/blob/main/NRDLclips.geojson) met daarin:
+	- een Wikidata item voor de bestemming
+	- een array met clips die elk volgende data bevatten:
+		- de datum van de aflevering in het formaat YYYY-MM
+		- een link naar de Nerdland aflevering op Soundcloud	
+		- de tijdscode van het fragment
