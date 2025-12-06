@@ -5,33 +5,41 @@
     <meta property="og:description" content="Reisbestemmingen voor nerds." />
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://unpkg.com/maplibre-gl@5.8.0/dist/maplibre-gl.js"></script>
-	<link href="https://unpkg.com/maplibre-gl@5.8.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@5.14.0/dist/maplibre-gl.js"></script>
+	<link href="https://unpkg.com/maplibre-gl@5.14.0/dist/maplibre-gl.css" rel="stylesheet" />
 	<script src="https://w.soundcloud.com/player/api.js"></script>
     <style>
         body { margin: 0; padding: 0; }
         html, body, #map { height: calc(100vh - 140px); }
         iframe { position:fixed; bottom:0;}
+		.maplibregl-popup {
+			max-width: 400px;
+		}
     </style>
 </head>
 <body>
-  <style>
-    .maplibregl-popup {
-        max-width: 400px;
-    }
-  </style>
-
-  <div id="map" ></div>
+  <div id="map" aria-label="Wereldkaart met bestemmingen die besproken werden in de Nerdland podcast"></div>
+  
+  <iframe width="100%" height="140" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2069232792&visual=true"></iframe>
   
   <script>
+  	// helper function to load data with no-cache
+	async function loadJSON(url) {
+		const resp = await fetch(url, { cache: 'no-cache' });
+		if (!resp.ok) {
+			throw new Error('HTTP ${resp.status} while fetching ${url}');
+		}
+		return await resp.json();
+	}
+  
     const map = new maplibregl.Map({
         container: 'map',
-        style: 'https://api.maptiler.com/maps/openstreetmap/style.json?key=vF0AVssUoSv9vAZNgmOg',
+        style: 'https://api.maptiler.com/maps/openstreetmap/style.json?key=dHlgITwl4N6YCaC9m9Bg',
         center: [0, 50],
         zoom: 1,
         maxBounds:[
-          [-169, -80],
-          [190, 85]
+			[-169, -80],
+			[190, 85]
         ]
     });
 	
@@ -55,17 +63,19 @@
     });
     
     map.on('load', async () => {
-	
 		// Add an image to use as a custom marker
         const image = await map.loadImage('https://upload.wikimedia.org/wikipedia/commons/7/77/Location_for_map.png');
         map.addImage('custom-marker', image.data);
-    
+
+		// load clips data
+		const NRDLclips = await loadJSON('https://raw.githubusercontent.com/seppesantens/bestemmingNerdLand/refs/heads/main/NRDLclips.json');
+
 		// Add a GeoJSON source
 		map.addSource('places', {
 			'type': 'geojson',
-			'data': './data.geojson'                   
+			'data': 'https://raw.githubusercontent.com/seppesantens/bestemmingNerdLand/refs/heads/main/NRDLplaces.geojson'                   
 		});
-		
+
 		// Add a layer showing the places.
 		map.addLayer({
 			'id': 'places',
@@ -84,8 +94,22 @@
 		map.on('click', 'places', (e) => {
 			const coordinates = e.features[0].geometry.coordinates.slice();
 			const WD_id = e.features[0].properties.WD_id;
-			const SC_link = e.features[0].properties.SC_link;
-			const SC_stfr = e.features[0].properties.SC_stfr;
+	    		
+			// Get the most recent clip for a Wikidata id from NRDLclips
+	    	function getLatestClip(clips){
+	    		let latest = clips[0];
+	    		
+	    		for (const clip of clips){
+	    			if (clip.EP_date > latest.EP_date){
+	    				latest = clip;
+	    			}
+	    		}
+	    		return latest;
+	    	}
+	    	
+	    	const latest = getLatestClip(NRDLclips[WD_id]);
+	    	const SC_link = latest.SC_link;
+	    	const SC_stfr = latest.SC_stfr;
 
 			// Ensure that if the map is zoomed out such that multiple
 			// copies of the feature are visible, the popup appears
@@ -111,7 +135,7 @@
 				WP_link = WikiDataItem["entities"][WD_id]["sitelinks"]["nlwiki"]["url"];
 				popupHTML = popupHTML + '<br />' +  '<a href="' + WP_link + '" target="_blank">lees meer op Wikipedia</a>';
 			  }
-			  
+
 			  popupHTML = popupHTML + '</p>';
 			  
 			  // Check whether the Wikidata item has an image (P18). If so, show it.
@@ -150,8 +174,6 @@
 
 	});
 </script>
-
-<iframe width="100%" height="140" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2069232792&visual=true"></iframe>
 
 </body>
 </html>
