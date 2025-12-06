@@ -68,12 +68,12 @@
         map.addImage('custom-marker', image.data);
 
 		// load clips data
-		const NRDLclips = await loadJSON('https://raw.githubusercontent.com/seppesantens/bestemmingNerdLand/refs/heads/main/NRDLclips.json');
+		const NRDLclips = await loadJSON('./NRDLclips.geojson');
 
 		// Add a GeoJSON source
 		map.addSource('places', {
 			'type': 'geojson',
-			'data': 'https://raw.githubusercontent.com/seppesantens/bestemmingNerdLand/refs/heads/main/NRDLplaces.geojson'                   
+			'data': './NRDLplaces.geojson'                   
 		});
 
 		// Add a layer showing the places.
