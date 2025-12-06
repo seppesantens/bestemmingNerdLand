@@ -239,14 +239,14 @@
   ],
   "Q43332": [
     {
-	  "EP_date": "2025-02",
-	  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2025",
-      "SC_stfr": 6970500
-    },
-	{
 	  "EP_date": "2023-08",
 	  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-augustus-2023",
       "SC_stfr": 3851000
+    },
+	{
+	  "EP_date": "2025-02",
+	  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2025",
+      "SC_stfr": 6970500
     }
   ],
   "Q524": [
