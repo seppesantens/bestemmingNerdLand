@@ -39,7 +39,7 @@
 	// helper function to load data with no-cache
 	async function loadJSON(url) {
 	  const resp = await fetch(url, { cache: 'no-cache' });
-	  if (!resp.ok) throw new Error(`HTTP ${resp.status} at ${url}`);
+	  if (!resp.ok) throw new Error('HTTP ${resp.status} at ${url}');
 	  return resp.json();
 	}
 	
@@ -64,133 +64,133 @@
     });
     
     map.on('load', async () => {
-		let NRDLclips;
-		
 		try {
-          // Data parallel ophalen en afwachten
-          const NRDLclips = await Promise.all([
-            loadJSON('./NRDLclips.json')
-		  ]);
+			// Data parallel ophalen en afwachten
+			const NRDLclips = await Promise.all([
+			loadJSON('./NRDLclips.json')
+			]);
+
+	    	// set default Soundcloud clip
+	    	var iframeElement = document.querySelector('iframe');
+	        var widget = SC.Widget(iframeElement);
+	       
+	        const SC_link = "https://api.soundcloud.com/tracks/2069232792";
+	        const SC_stfr = 7552500;
+	       
+	    	widget.load(SC_link, {'visual':'true'});
+	    	widget.bind(SC.Widget.Events.READY,function(){ //When player is ready, attach an event
+	    		widget.seekTo(SC_stfr);
+	    	});
+	       
+	       
+	    	// Add an image to use as a custom marker
+	    	const image = await map.loadImage('https://upload.wikimedia.org/wikipedia/commons/7/77/Location_for_map.png');
+	    	map.addImage('custom-marker', image.data);
+	    
+	    	// Add a GeoJSON source
+	    	map.addSource('places', {
+	    		'type': 'geojson',
+	    		'data': './NRDLplaces.geojson'                 
+	    	});
+	    	
+	    	// Add a layer showing the places.
+	    	map.addLayer({
+	    		'id': 'places',
+	    		'type': 'symbol',
+	    		'source': 'places',
+	    		'layout': {
+	    			'icon-image': 'custom-marker',
+	    			'icon-size': 0.6,
+	    			'icon-anchor': 'bottom',
+	    			'icon-overlap': 'always'
+	    		}
+	    	});
+	       
+	    	// When a click event occurs on a feature in the places layer, open a popup at the
+	    	// location of the feature, with description HTML from its properties.
+	    	map.on('click', 'places', (e) => {
+	    		const coordinates = e.features[0].geometry.coordinates.slice();
+	    		const WD_id = e.features[0].properties.WD_id;
+	    		
+	    		// Get the most recent clip for a Wikidata id from NRDLclips
+	    		function getLatestClip(clips){
+	    			let latest = clips[0];
+	    			
+	    			for (const clip of clips){
+	    				if (clip.EP_date > latest.EP_date){
+	    					latest = clip;
+	    				}
+	    			}
+	    			return latest;
+	    		}
+	    		
+	    		const latest = getLatestClip(NRDLclips[WD_id]);
+	    		const SC_link = latest.SC_link;
+	    		const SC_stfr = latest.SC_stfr;
+	       
+	    		// Ensure that if the map is zoomed out such that multiple
+	    		// copies of the feature are visible, the popup appears
+	    		// over the copy being pointed to.
+	    		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+	    			coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+	    		}            
+	    		
+	    		const WikiData_url = "https://www.wikidata.org/wiki/Special:EntityData/" + WD_id + ".json";
+	    		
+	    		async function getWikiDataItem() {
+	    		  const response = await fetch(WikiData_url);
+	    		  const WikiDataItem = await response.json();
+	    		  // to do: situatie opvangen waarbij label of beschrijving niet beschikbaar zijn in het Nederlands
+	    		  const label = WikiDataItem["entities"][WD_id]["labels"]["nl"]["value"];
+	    		  const description = WikiDataItem["entities"][WD_id]["descriptions"]["nl"]["value"];
+	       
+	    		  popupHTML = '<p> <strong>' + label + '</strong> <br />' + description;
+	       
+	    		  // Check whether the Wikidata item has a Dutch Wikipedia page
+	    		  WP_link = "Geen Wikipedia-artikel beschikbaar";
+	    		  if (WikiDataItem["entities"][WD_id]["sitelinks"]?.["nlwiki"]?.["url"]) {
+	    			WP_link = WikiDataItem["entities"][WD_id]["sitelinks"]["nlwiki"]["url"];
+	    			popupHTML = popupHTML + '<br />' +  '<a href="' + WP_link + '" target="_blank">lees meer op Wikipedia</a>';
+	    		  }
+	    		  
+	    		  popupHTML = popupHTML + '</p>';
+	    		  
+	    		  // Check whether the Wikidata item has an image (P18). If so, show it.
+	    		  if (WikiDataItem['entities'][WD_id]['claims']['P18']?.[0]?.['mainsnak']?.['datavalue']?.['value']) {
+	    			const filename = WikiDataItem['entities'][WD_id]['claims']['P18'][0]['mainsnak']['datavalue']['value'];
+	    			const URL = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(filename.trim());
+	    			popupHTML = popupHTML + '<img src="' + URL + '" width="100%">';
+	    		  }
+	       
+	    		  new maplibregl.Popup()
+	    			.setLngLat(coordinates)
+	    			.setHTML(popupHTML)
+	    			.addTo(map);
+	    		}
+	       
+	    		getWikiDataItem();
+	    		
+	    		widget.load(SC_link, {'visual':'true'});
+	    		widget.bind(SC.Widget.Events.READY,function(){ //When player is ready, attach an event
+	    			widget.seekTo(SC_stfr);
+	    		});
+	    	});
+	       
+	    	// Change the cursor to a pointer when the mouse is over the places layer.
+	    	map.on('mouseenter', 'places', () => {
+	    		map.getCanvas().style.cursor = 'pointer';
+	    	});
+	       
+	    	// Change it back to a pointer when it leaves.
+	    	map.on('mouseleave', 'places', () => {
+	    		map.getCanvas().style.cursor = '';
+	    	});
+	    
+		
 		} catch (err) {
 		  console.error('Error while loading clips data', err);
 		}
 		
-		// set default Soundcloud clip
-		var iframeElement = document.querySelector('iframe');
-	    var widget = SC.Widget(iframeElement);
-
-	    const SC_link = "https://api.soundcloud.com/tracks/2069232792";
-	    const SC_stfr = 7552500;
-
-		widget.load(SC_link, {'visual':'true'});
-		widget.bind(SC.Widget.Events.READY,function(){ //When player is ready, attach an event
-			widget.seekTo(SC_stfr);
-		});
-
-
-		// Add an image to use as a custom marker
-        const image = await map.loadImage('https://upload.wikimedia.org/wikipedia/commons/7/77/Location_for_map.png');
-        map.addImage('custom-marker', image.data);
-    
-		// Add a GeoJSON source
-		map.addSource('places', {
-			'type': 'geojson',
-			'data': './NRDLplaces.geojson'                 
-		});
-		
-		// Add a layer showing the places.
-		map.addLayer({
-			'id': 'places',
-			'type': 'symbol',
-			'source': 'places',
-			'layout': {
-				'icon-image': 'custom-marker',
-				'icon-size': 0.6,
-				'icon-anchor': 'bottom',
-				'icon-overlap': 'always'
-			}
-		});
-
-		// When a click event occurs on a feature in the places layer, open a popup at the
-		// location of the feature, with description HTML from its properties.
-		map.on('click', 'places', (e) => {
-			const coordinates = e.features[0].geometry.coordinates.slice();
-			const WD_id = e.features[0].properties.WD_id;
-			
-			// Get the most recent clip for a Wikidata id from NRDLclips
-			function getLatestClip(clips){
-				let latest = clips[0];
-				
-				for (const clip of clips){
-					if (clip.EP_date > latest.EP_date){
-						latest = clip;
-					}
-				}
-				return latest;
-			}
-			
-			const latest = getLatestClip(NRDLclips[WD_id]);
-			const SC_link = latest.SC_link;
-			const SC_stfr = latest.SC_stfr;
-
-			// Ensure that if the map is zoomed out such that multiple
-			// copies of the feature are visible, the popup appears
-			// over the copy being pointed to.
-			while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-			}            
-			
-			const WikiData_url = "https://www.wikidata.org/wiki/Special:EntityData/" + WD_id + ".json";
-			
-			async function getWikiDataItem() {
-			  const response = await fetch(WikiData_url);
-			  const WikiDataItem = await response.json();
-			  // to do: situatie opvangen waarbij label of beschrijving niet beschikbaar zijn in het Nederlands
-			  const label = WikiDataItem["entities"][WD_id]["labels"]["nl"]["value"];
-			  const description = WikiDataItem["entities"][WD_id]["descriptions"]["nl"]["value"];
-
-			  popupHTML = '<p> <strong>' + label + '</strong> <br />' + description;
-
-			  // Check whether the Wikidata item has a Dutch Wikipedia page
-			  WP_link = "Geen Wikipedia-artikel beschikbaar";
-			  if (WikiDataItem["entities"][WD_id]["sitelinks"]?.["nlwiki"]?.["url"]) {
-				WP_link = WikiDataItem["entities"][WD_id]["sitelinks"]["nlwiki"]["url"];
-				popupHTML = popupHTML + '<br />' +  '<a href="' + WP_link + '" target="_blank">lees meer op Wikipedia</a>';
-			  }
-			  
-			  popupHTML = popupHTML + '</p>';
-			  
-			  // Check whether the Wikidata item has an image (P18). If so, show it.
-			  if (WikiDataItem['entities'][WD_id]['claims']['P18']?.[0]?.['mainsnak']?.['datavalue']?.['value']) {
-				const filename = WikiDataItem['entities'][WD_id]['claims']['P18'][0]['mainsnak']['datavalue']['value'];
-				const URL = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(filename.trim());
-				popupHTML = popupHTML + '<img src="' + URL + '" width="100%">';
-			  }
-
-			  new maplibregl.Popup()
-				.setLngLat(coordinates)
-				.setHTML(popupHTML)
-				.addTo(map);
-			}
-
-			getWikiDataItem();
-			
-			widget.load(SC_link, {'visual':'true'});
-			widget.bind(SC.Widget.Events.READY,function(){ //When player is ready, attach an event
-				widget.seekTo(SC_stfr);
-			});
-		});
-
-		// Change the cursor to a pointer when the mouse is over the places layer.
-		map.on('mouseenter', 'places', () => {
-			map.getCanvas().style.cursor = 'pointer';
-		});
-
-		// Change it back to a pointer when it leaves.
-		map.on('mouseleave', 'places', () => {
-			map.getCanvas().style.cursor = '';
-		});
-
 	});
 </script>
 
