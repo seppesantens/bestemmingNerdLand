@@ -20,7 +20,7 @@ De data zijn opgesplitst in
 	- een Wikidata item voor de bestemming
 	- de geografische coördinaten van de bestemming
 
-- [NRDLclips.geojson](https://github.com/seppesantens/bestemmingNerdLand/blob/main/NRDLclips.geojson) met daarin:
+- [NRDLclips.geojson](https://github.com/seppesantens/bestemmingNerdLand/blob/main/NRDLclips.json) met daarin:
 	- een Wikidata item voor de bestemming
 	- een array met clips die elk volgende data bevatten:
 		- de datum van de aflevering in het formaat YYYY-MM
