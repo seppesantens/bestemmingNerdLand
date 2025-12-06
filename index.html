@@ -1,30 +1,50 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <title>Bestemming Nerdland</title>
-    <meta property="og:description" content="Reisbestemmingen voor nerds." />
     <meta charset='utf-8'>
+	<title>Bestemming Nerdland</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://unpkg.com/maplibre-gl@5.8.0/dist/maplibre-gl.js"></script>
-	<link href="https://unpkg.com/maplibre-gl@5.8.0/dist/maplibre-gl.css" rel="stylesheet" />
+	<meta property="og:description" content="Reisbestemmingen voor nerds." />
+    
+	<!-- MapLibre -->
+	<link href="https://unpkg.com/maplibre-gl@5.8.0/dist/maplibre-gl.css" rel="stylesheet" />	
+	<script src="https://unpkg.com/maplibre-gl@5.8.0/dist/maplibre-gl.js"></script>
+
+	<!-- SoundCloud -->
 	<script src="https://w.soundcloud.com/player/api.js"></script>
-    <style>
+    
+	<style>
         body { margin: 0; padding: 0; }
         html, body, #map { height: calc(100vh - 140px); }
         iframe { position:fixed; bottom:0;}
+		.maplibregl-popup {
+        max-width: 400px;
+		}
     </style>
 </head>
 <body>
-  <style>
-    .maplibregl-popup {
-        max-width: 400px;
-    }
-  </style>
 
-  <div id="map" ></div>
+  <div id="map" aria-label="Wereldkaart met bestemmingen die besproken werden in de Nerdland podcast"></div>
+  
+  <iframe 
+	title="SoundCloud speler"
+	width="100%" 
+	height="140" 
+	scrolling="no" 
+	frameborder="no" 
+	src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2069232792&visual=true">
+  </iframe>
   
   <script>
-    const map = new maplibregl.Map({
+	// helper function to load data with no-cache
+	async function loadJSON(url) {
+	  const resp = await fetch(url, { cache: 'no-cache' });
+	  if (!resp.ok) throw new Error(`HTTP ${resp.status} at ${url}`);
+	  return resp.json();
+	}
+	
+	// create map
+	const map = new maplibregl.Map({
         container: 'map',
         style: 'https://api.maptiler.com/maps/openstreetmap/style.json?key=vF0AVssUoSv9vAZNgmOg',
         center: [0, 50],
@@ -36,11 +56,25 @@
     });
 	
 	map.addControl(new maplibregl.GlobeControl(), 'top-right');
+	
 	map.on('style.load', () => {
         map.setProjection({
             type: 'globe', // Set projection to globe
-        });
+        });		
+    });
+    
+    map.on('load', async () => {
+		try {
+          // Data parallel ophalen en afwachten
+          const [NRDLplaces, NRDLclips] = await Promise.all([
+            loadJSON('./NRDLplaces.geojson'),
+            loadJSON('./NRDLclips.json')
+		  ]);
+		} catch (err) {
+		  console.error('Error while loading data', error);
+		}
 		
+		// set default Soundcloud clip
 		var iframeElement = document.querySelector('iframe');
 	    var widget = SC.Widget(iframeElement);
 
@@ -51,11 +85,8 @@
 		widget.bind(SC.Widget.Events.READY,function(){ //When player is ready, attach an event
 			widget.seekTo(SC_stfr);
 		});
-		
-    });
-    
-    map.on('load', async () => {
-	
+
+
 		// Add an image to use as a custom marker
         const image = await map.loadImage('https://upload.wikimedia.org/wikipedia/commons/7/77/Location_for_map.png');
         map.addImage('custom-marker', image.data);
@@ -63,7 +94,7 @@
 		// Add a GeoJSON source
 		map.addSource('places', {
 			'type': 'geojson',
-			'data': './data.geojson'                   
+			'data': NRDLplaces                   
 		});
 		
 		// Add a layer showing the places.
@@ -84,8 +115,22 @@
 		map.on('click', 'places', (e) => {
 			const coordinates = e.features[0].geometry.coordinates.slice();
 			const WD_id = e.features[0].properties.WD_id;
-			const SC_link = e.features[0].properties.SC_link;
-			const SC_stfr = e.features[0].properties.SC_stfr;
+			
+			// Get the most recent clip for a Wikidata id from NRDLclips
+			function getLatestClip(clips){
+				let latest = clips[0];
+				
+				for (const clip of clips){
+					if (clip.EP_date > latest.EP_date){
+						latest = clip;
+					}
+				}
+				return latest;
+			}
+			
+			const latest = getLatestClip(NRDLclips[WD_id]);
+			const SC_link = latest.SC_link;
+			const SC_stfr = latest.SC_stfr;
 
 			// Ensure that if the map is zoomed out such that multiple
 			// copies of the feature are visible, the popup appears
@@ -129,13 +174,10 @@
 
 			getWikiDataItem();
 			
-			var iframeElement = document.querySelector('iframe');
-			var widget= SC.Widget(iframeElement);
 			widget.load(SC_link, {'visual':'true'});
 			widget.bind(SC.Widget.Events.READY,function(){ //When player is ready, attach an event
 				widget.seekTo(SC_stfr);
 			});
-				
 		});
 
 		// Change the cursor to a pointer when the mouse is over the places layer.
@@ -150,8 +192,6 @@
 
 	});
 </script>
-
-<iframe width="100%" height="140" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2069232792&visual=true"></iframe>
 
 </body>
 </html>
