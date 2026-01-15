@@ -20,8 +20,6 @@
 <body>
   <div id="map" aria-label="Wereldkaart met bestemmingen die besproken werden in de Nerdland podcast"></div>
   
-  <iframe width="100%" height="140" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2069232792&visual=true"></iframe>
-  
   <script>
   	// helper function to load data with no-cache
 	async function loadJSON(url) {
@@ -73,8 +71,39 @@
 		// Add a GeoJSON source
 		map.addSource('places', {
 			'type': 'geojson',
-			'data': './NRDLplaces.geojson'                   
+			'data': './NRDLplaces.geojson',  
+			cluster: true,
+			clusterMaxZoom: 9,
+			clusterRadius: 25 // Radius of each cluster when clustering points			
 		});
+
+		// cluster layer
+		map.addLayer({
+            'id': 'clusters',
+            'type': 'circle',
+            'source': 'places',
+            'filter': ['has', 'point_count'],
+            'paint': {
+                'circle-color': '#6a40d2',
+				'circle-opacity': 0.6,
+                'circle-radius': 23
+            }
+        });
+
+		// cluster count layer
+        map.addLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: 'places',
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-size': 14
+            },
+			"paint": {
+				"text-color": "white"
+			}
+        });
 
 		// Add a layer showing the places.
 		map.addLayer({
@@ -88,6 +117,19 @@
 				'icon-overlap': 'always'
 			}
 		});
+
+        // inspect a cluster on click
+        map.on('click', 'clusters', async (e) => {
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: ['clusters']
+            });
+            const clusterId = features[0].properties.cluster_id;
+            const zoom = (await map.getSource('places').getClusterExpansionZoom(clusterId))+1;
+			map.easeTo({
+                center: features[0].geometry.coordinates,
+                zoom
+            });
+        });
 
 		// When a click event occurs on a feature in the places layer, open a popup at the
 		// location of the feature, with description HTML from its properties.
@@ -162,18 +204,29 @@
 				
 		});
 
-		// Change the cursor to a pointer when the mouse is over the places layer.
+		// Change the cursor to a pointer when the mouse is over the places or clusters layer.
 		map.on('mouseenter', 'places', () => {
 			map.getCanvas().style.cursor = 'pointer';
 		});
+		
+		map.on('mouseenter', 'clusters', () => {
+			map.getCanvas().style.cursor = 'pointer';
+		});
+
 
 		// Change it back to a pointer when it leaves.
 		map.on('mouseleave', 'places', () => {
 			map.getCanvas().style.cursor = '';
 		});
+		
+		map.on('mouseleave', 'cluster', () => {
+			map.getCanvas().style.cursor = '';
+		});
 
 	});
 </script>
+
+<iframe width="100%" height="140" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2069232792&visual=true"></iframe>
 
 </body>
 </html>
