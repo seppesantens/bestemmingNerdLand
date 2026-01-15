@@ -355,19 +355,6 @@
     {
       "type": "Feature",
       "properties": {
-        "WD_id": "Q351"
-      },
-      "geometry": {
-        "coordinates": [
-          -110.5623,
-          44.6257
-        ],
-        "type": "Point"
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "WD_id": "Q1081921"
       },
       "geometry": {
