@@ -84,7 +84,7 @@
             'source': 'places',
             'filter': ['has', 'point_count'],
             'paint': {
-                'circle-color': '#6a40d2',
+                'circle-color': '#ff3d00',
 				'circle-opacity': 0.6,
                 'circle-radius': 23
             }
@@ -110,6 +110,7 @@
 			'id': 'places',
 			'type': 'symbol',
 			'source': 'places',
+			'filter': ['!', ['has', 'point_count']],
 			'layout': {
 				'icon-image': 'custom-marker',
 				'icon-size': 0.6,
