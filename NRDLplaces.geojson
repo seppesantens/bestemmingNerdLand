@@ -702,6 +702,45 @@
         ],
         "type": "Point"
       }
+    },
+	{
+      "type": "Feature",
+      "properties": {
+        "WD_id": "Q65725817"
+      },
+      "geometry": {
+        "coordinates": [
+		  -20.882245,
+		  64.60443
+        ],
+        "type": "Point"
+      }
+    },
+	{
+      "type": "Feature",
+      "properties": {
+        "WD_id": "Q177477"
+      },
+      "geometry": {
+        "coordinates": [
+		  63.3530,
+		  45.9380
+        ],
+        "type": "Point"
+      }
+    },
+	{
+      "type": "Feature",
+      "properties": {
+        "WD_id": "Q1892311"
+      },
+      "geometry": {
+        "coordinates": [
+		  4.3637,
+		  50.8446
+        ],
+        "type": "Point"
+      }
     }
   ]
 }
