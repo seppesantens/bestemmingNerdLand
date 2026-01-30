@@ -62,7 +62,7 @@
     
     map.on('load', async () => {
 		// Add an image to use as a custom marker
-        const image = await map.loadImage('https://upload.wikimedia.org/wikipedia/commons/7/77/Location_for_map.png');
+        const image = await map.loadImage('https://raw.githubusercontent.com/seppesantens/bestemmingNerdLand/refs/heads/main/NerdlandLogo.png');
         map.addImage('custom-marker', image.data);
 
 		// load clips data
@@ -84,7 +84,7 @@
             'source': 'places',
             'filter': ['has', 'point_count'],
             'paint': {
-                'circle-color': '#ff3d00',
+                'circle-color': '#6a40d2',
 				'circle-opacity': 0.6,
                 'circle-radius': 23
             }
