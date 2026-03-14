@@ -741,6 +741,19 @@
         ],
         "type": "Point"
       }
+    },
+	{
+      "type": "Feature",
+      "properties": {
+        "WD_id": "Q1246624"
+      },
+      "geometry": {
+        "coordinates": [
+		  110.951133,
+		  19.614492
+        ],
+        "type": "Point"
+      }
     }
   ]
 }
