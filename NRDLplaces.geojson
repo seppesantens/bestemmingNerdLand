@@ -749,8 +749,34 @@
       },
       "geometry": {
         "coordinates": [
-		  110.951133,
-		  19.614492
+          110.951133,
+          19.614492
+        ],
+        "type": "Point"
+      }
+    },
+	{
+      "type": "Feature",
+      "properties": {
+        "WD_id": "Q153193"
+      },
+      "geometry": {
+        "coordinates": [
+          5.976667,
+          50.885
+        ],
+        "type": "Point"
+      }
+    },
+	{
+      "type": "Feature",
+      "properties": {
+        "WD_id": "Q114295"
+      },
+      "geometry": {
+        "coordinates": [
+          141.0325,
+          37.421389
         ],
         "type": "Point"
       }
