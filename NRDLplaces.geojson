@@ -690,7 +690,7 @@
         "type": "Point"
       }
     },
-	{
+	  {
       "type": "Feature",
       "properties": {
         "WD_id": "Q1055100"
@@ -703,7 +703,7 @@
         "type": "Point"
       }
     },
-	{
+	  {
       "type": "Feature",
       "properties": {
         "WD_id": "Q65725817"
@@ -716,7 +716,7 @@
         "type": "Point"
       }
     },
-	{
+	  {
       "type": "Feature",
       "properties": {
         "WD_id": "Q177477"
@@ -729,7 +729,7 @@
         "type": "Point"
       }
     },
-	{
+	  {
       "type": "Feature",
       "properties": {
         "WD_id": "Q1892311"
@@ -742,7 +742,7 @@
         "type": "Point"
       }
     },
-	{
+	  {
       "type": "Feature",
       "properties": {
         "WD_id": "Q1246624"
@@ -755,7 +755,7 @@
         "type": "Point"
       }
     },
-	{
+	  {
       "type": "Feature",
       "properties": {
         "WD_id": "Q153193"
@@ -768,7 +768,7 @@
         "type": "Point"
       }
     },
-	{
+	  {
       "type": "Feature",
       "properties": {
         "WD_id": "Q114295"
@@ -777,6 +777,19 @@
         "coordinates": [
           141.0325,
           37.421389
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "WD_id": "Q1667937"
+      },
+      "geometry": {
+        "coordinates": [
+          4.679854,
+		  	  50.866924
         ],
         "type": "Point"
       }
