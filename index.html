@@ -25,11 +25,73 @@
 	async function loadJSON(url) {
 		const resp = await fetch(url, { cache: 'no-cache' });
 		if (!resp.ok) {
-			throw new Error('HTTP ${resp.status} while fetching ${url}');
+			throw new Error(`HTTP ${resp.status} while fetching ${url}`);
 		}
 		return await resp.json();
 	}
   
+	function getLatestClip(clips){
+	  let latest = clips[0];
+	  for (const clip of clips){
+	  	if (clip.EP_date > latest.EP_date){
+	    	latest = clip;
+	    }
+	  }
+	  return latest;
+	}
+
+	async function getWikiDataItem(WD_id, coordinates) {
+	  const WikiData_url = "https://www.wikidata.org/wiki/Special:EntityData/" + WD_id + ".json";
+	  
+	  try {
+		const response = await fetch(WikiData_url);
+		if (!response.ok) {
+			throw new Error(`HTTP ${response.status} while fetching ${WikiData_url}`);
+		}
+		const WikiDataItem = await response.json();
+		
+		const entities = WikiDataItem["entities"][WD_id];
+		if (!entities || "missing" in entities) {
+			throw new Error(`Geen Wikidata-item gevonden voor ${WD_id}`);
+		}
+
+		const label = entities["labels"]?.["nl"]?.["value"]
+			?? entities["labels"]?.["en"]?.["value"]
+			?? WD_id;
+		const description = entities["descriptions"]?.["nl"]?.["value"]
+			?? entities["descriptions"]?.["en"]?.["value"]
+			?? "";
+
+		let popupHTML = `<p><strong>${label}</strong><br>${description}`;
+
+		// Check whether the Wikidata item has a Dutch Wikipedia page
+		if (entities["sitelinks"]?.["nlwiki"]?.["url"]) {
+			const WP_link = entities["sitelinks"]["nlwiki"]["url"];
+			popupHTML += `<br><a href="${WP_link}" target="_blank">lees meer op Wikipedia</a>`;
+		}
+
+		popupHTML += "</p>";
+		
+		// Check whether the Wikidata item has an image (P18). If so, show it.
+		if (entities["claims"]?.["P18"]?.[0]?.["mainsnak"]?.["datavalue"]?.["value"]) {
+			const filename = entities["claims"]["P18"][0]["mainsnak"]["datavalue"]["value"];
+			const imgURL = "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(filename.trim());
+			popupHTML += `<img src="${imgURL}" width="100%">`;
+		}
+
+		new maplibregl.Popup()
+			.setLngLat(coordinates)
+			.setHTML(popupHTML)
+			.addTo(map);
+		} catch (error) {
+		console.error("Fout bij ophalen Wikidata:", error);
+		new maplibregl.Popup()
+			.setLngLat(coordinates)
+			.setHTML(`<p>Kon geen informatie ophalen voor <a href="https://www.wikidata.org/wiki/${WD_id}" target="_blank">${WD_id}</a>.</p>`)
+			.addTo(map);
+	  }
+	}
+
     const map = new maplibregl.Map({
         container: 'map',
         style: 'https://api.maptiler.com/maps/openstreetmap/style.json?key=vF0AVssUoSv9vAZNgmOg',
@@ -45,22 +107,22 @@
 	map.on('style.load', () => {
         map.setProjection({
             type: 'globe', // Set projection to globe
-        });
-		
+        });		
+    });
+    
+    map.on('load', async () => {
+		// SoundCloud initialisatie
 		var iframeElement = document.querySelector('iframe');
-	    var widget = SC.Widget(iframeElement);
+		var widget = SC.Widget(iframeElement);
 
-	    const SC_link = "https://api.soundcloud.com/tracks/2069232792";
-	    const SC_stfr = 7552500;
+		const SC_link = "https://api.soundcloud.com/tracks/2069232792";
+		const SC_stfr = 7552500;
 
 		widget.load(SC_link, {'visual':'true'});
 		widget.bind(SC.Widget.Events.READY,function(){ //When player is ready, attach an event
 			widget.seekTo(SC_stfr);
 		});
-		
-    });
-    
-    map.on('load', async () => {
+
 		// Add an image to use as a custom marker
         const image = await map.loadImage('https://raw.githubusercontent.com/seppesantens/bestemmingNerdLand/refs/heads/main/NerdlandLogo.png');
         map.addImage('custom-marker', image.data);
@@ -139,16 +201,10 @@
 			const WD_id = e.features[0].properties.WD_id;
 	    		
 			// Get the most recent clip for a Wikidata id from NRDLclips
-	    	function getLatestClip(clips){
-	    		let latest = clips[0];
-	    		
-	    		for (const clip of clips){
-	    			if (clip.EP_date > latest.EP_date){
-	    				latest = clip;
-	    			}
-	    		}
-	    		return latest;
-	    	}
+	     	if (!NRDLclips[WD_id]) {
+        	  console.warn(`Geen clip gevonden voor ${WD_id}`);
+        	  return;
+    		}
 	    	
 	    	const latest = getLatestClip(NRDLclips[WD_id]);
 	    	const SC_link = latest.SC_link;
@@ -161,40 +217,7 @@
 				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
 			}            
 			
-			const WikiData_url = "https://www.wikidata.org/wiki/Special:EntityData/" + WD_id + ".json";
-			
-			async function getWikiDataItem() {
-			  const response = await fetch(WikiData_url);
-			  const WikiDataItem = await response.json();
-			  // to do: situatie opvangen waarbij label of beschrijving niet beschikbaar zijn in het Nederlands
-			  const label = WikiDataItem["entities"][WD_id]["labels"]["nl"]["value"];
-			  const description = WikiDataItem["entities"][WD_id]["descriptions"]["nl"]["value"];
-
-			  popupHTML = '<p> <strong>' + label + '</strong> <br />' + description;
-
-			  // Check whether the Wikidata item has a Dutch Wikipedia page
-			  WP_link = "Geen Wikipedia-artikel beschikbaar";
-			  if (WikiDataItem["entities"][WD_id]["sitelinks"]?.["nlwiki"]?.["url"]) {
-				WP_link = WikiDataItem["entities"][WD_id]["sitelinks"]["nlwiki"]["url"];
-				popupHTML = popupHTML + '<br />' +  '<a href="' + WP_link + '" target="_blank">lees meer op Wikipedia</a>';
-			  }
-
-			  popupHTML = popupHTML + '</p>';
-			  
-			  // Check whether the Wikidata item has an image (P18). If so, show it.
-			  if (WikiDataItem['entities'][WD_id]['claims']['P18']?.[0]?.['mainsnak']?.['datavalue']?.['value']) {
-				const filename = WikiDataItem['entities'][WD_id]['claims']['P18'][0]['mainsnak']['datavalue']['value'];
-				const URL = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(filename.trim());
-				popupHTML = popupHTML + '<img src="' + URL + '" width="100%">';
-			  }
-
-			  new maplibregl.Popup()
-				.setLngLat(coordinates)
-				.setHTML(popupHTML)
-				.addTo(map);
-			}
-
-			getWikiDataItem();
+			getWikiDataItem(WD_id, coordinates);
 			
 			var iframeElement = document.querySelector('iframe');
 			var widget= SC.Widget(iframeElement);
@@ -220,7 +243,7 @@
 			map.getCanvas().style.cursor = '';
 		});
 		
-		map.on('mouseleave', 'cluster', () => {
+		map.on('mouseleave', 'clusters', () => {
 			map.getCanvas().style.cursor = '';
 		});
 

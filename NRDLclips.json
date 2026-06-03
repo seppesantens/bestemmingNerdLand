@@ -233,6 +233,11 @@
 	  "EP_date": "2025-02",
 	  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2025",
       "SC_stfr": 384100
+    },
+    {
+	  "EP_date": "2026-02",
+	  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2026",
+      "SC_stfr": 2814000
     }
   ],
   "Q513": [
@@ -248,7 +253,7 @@
 	  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-augustus-2023",
       "SC_stfr": 3851000
     },
-	{
+	  {
 	  "EP_date": "2025-02",
 	  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2025",
       "SC_stfr": 6970500
@@ -399,13 +404,6 @@
 	  "EP_date": "2026-01",
 	  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-januari-2026",
       "SC_stfr": 5617000
-    }
-  ],
-  "Q901058": [
-    {
-	  "EP_date": "2026-02",
-	  "SC_link": "https://soundcloud.com/lieven-scheire/nerdland-maandoverzicht-februari-2026",
-      "SC_stfr": 2814000
     }
   ],
   "Q1246624": [
