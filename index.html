@@ -5,8 +5,7 @@
     <meta property="og:description" content="Reisbestemmingen voor nerds." />
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
-	<link href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet" />
+	<link href="https://unpkg.com/maplibre-gl@6.17.0/dist/maplibre-gl.css" rel="stylesheet" />
 	<script src="https://w.soundcloud.com/player/api.js"></script>
     <style>
         body { margin: 0; padding: 0; }
@@ -28,7 +27,9 @@
 	}
   </script>
 
-  <script>
+  <script type="module">
+    import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.17.0/dist/maplibre-gl.mjs';
+	
   	// helper function to load data with no-cache
 	async function loadJSON(url) {
 		const resp = await fetch(url, { cache: 'no-cache' });
@@ -167,7 +168,7 @@
             source: 'places',
             filter: ['has', 'point_count'],
             layout: {
-                'text-field': '{point_count_abbreviated}',
+                'text-field': ['get', 'point_count_abbreviated'],
                 'text-size': 14
             },
 			"paint": {
