@@ -103,7 +103,7 @@
 
     const map = new maplibregl.Map({
         container: 'map',
-        style: `https://api.maptiler.com/maps/openstreetmap/style.json?key=${window.NRDL.maptilerKey}`,
+        style: `https://api.maptiler.com/maps/01a1c736-563f-7273-a8a8-8bf2b8ffefad/style.json?key=${window.NRDL.maptilerKey}`,
         center: [0, 50],
         zoom: 1,
         maxBounds:[
@@ -156,7 +156,7 @@
             'filter': ['has', 'point_count'],
             'paint': {
                 'circle-color': '#6a40d2',
-				'circle-opacity': 0.6,
+				'circle-opacity': 0.8,
                 'circle-radius': 23
             }
         });
@@ -184,7 +184,7 @@
 			'filter': ['!', ['has', 'point_count']],
 			'layout': {
 				'icon-image': 'custom-marker',
-				'icon-size': 0.23,
+				'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.23, 6, 0.3, 10, 0.4],
 				'icon-anchor': 'bottom',
 				'icon-overlap': 'always'
 			}
