@@ -20,6 +20,14 @@
 <body>
   <div id="map" aria-label="Wereldkaart met bestemmingen die besproken werden in de Nerdland podcast"></div>
   
+  <script src="config.js"></script>
+  <script>
+	const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+	if (isLocal) {
+		document.write('<script src="config.local.js"><\/script>');
+	}
+  </script>
+
   <script>
   	// helper function to load data with no-cache
 	async function loadJSON(url) {
@@ -94,7 +102,7 @@
 
     const map = new maplibregl.Map({
         container: 'map',
-        style: 'https://api.maptiler.com/maps/openstreetmap/style.json?key=vF0AVssUoSv9vAZNgmOg',
+        style: `https://api.maptiler.com/maps/openstreetmap/style.json?key=${window.NRDL.maptilerKey}`,
         center: [0, 50],
         zoom: 1,
         maxBounds:[
